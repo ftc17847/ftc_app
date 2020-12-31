@@ -15,14 +15,19 @@ public class Hardware {
     public DcMotor DM3;
     public DcMotor DM4;
 
-    //Launcher motors
+    //odometry endcoders
+
+    public DcMotor En1;
+    public DcMotor En2;
+    public DcMotor En3;
+
+    //Launcher motor
     public DcMotor L1;
-    public DcMotor L2;
 
     //Intake motor
     public DcMotor I;
 
-    //Internal convayer motor
+    //Internal conveyor motor
     public DcMotor C;
 
     //if we need (cr)servos
@@ -44,8 +49,11 @@ public class Hardware {
         DM3 = this.hardwareMap.get(DcMotor.class, "DM3");
         DM4 = this.hardwareMap.get(DcMotor.class, "DM4");
 
+        En1 = this.hardwareMap.get(DcMotor.class, "En1");
+        En2 = this.hardwareMap.get(DcMotor.class, "En2");
+        En3 = this.hardwareMap.get(DcMotor.class, "En3");
+
         L1 = this.hardwareMap.get(DcMotor.class, "L1");
-        L2 = this.hardwareMap.get(DcMotor.class, "L2");
 
         I = this.hardwareMap.get(DcMotor.class, "I");
 
@@ -66,10 +74,8 @@ public class Hardware {
 
 
         L1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        L2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         L1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        L2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         I.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -81,7 +87,6 @@ public class Hardware {
         DM4.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         L1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        L2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         I.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
