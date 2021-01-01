@@ -15,7 +15,7 @@ public class Hardware {
     public DcMotor DM3;
     public DcMotor DM4;
 
-    //odometry endcoders
+    //odometry encoders
 
     public DcMotor En1;
     public DcMotor En2;
@@ -36,6 +36,8 @@ public class Hardware {
     //public Servo ;
 
     HardwareMap hardwareMap;
+
+    private double[] GlobalPos;
 
     public Hardware() {
 
@@ -73,6 +75,15 @@ public class Hardware {
         DM4.setDirection(DcMotor.Direction.REVERSE);
 
 
+        En1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        En2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        En3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        //En1.setDirection(DcMotor.Direction.REVERSE);
+        //En2.setDirection(DcMotor.Direction.REVERSE);
+        //En3.setDirection(DcMotor.Direction.REVERSE);
+
+
         L1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         L1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -91,7 +102,6 @@ public class Hardware {
         I.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         C.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
     }
 
     public void PowerControl(double p1, double p2, double p3, double p4) {
@@ -102,4 +112,19 @@ public class Hardware {
         DM4.setPower(p4);
 
     }
+
+    public double[] getGlobalPos() {
+
+        return GlobalPos;
+
+    }
+
+    public void setGlobalPos(double x, double y, double a) {
+
+        GlobalPos[0] = x;
+        GlobalPos[1] = y;
+        GlobalPos[2] = a;
+
+    }
+
 }

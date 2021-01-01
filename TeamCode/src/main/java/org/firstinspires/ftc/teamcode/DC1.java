@@ -1,7 +1,8 @@
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Hardware;
 
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.Hardware;
 public class DC1 extends LinearOpMode {
 
     Hardware hardware = new Hardware();
+    Odometry odometry = new Odometry();
     float MP = 1; //Movement Power Multiplier
     double IP = 1; //Intake Power
     double CP = 1; //conveyor Power
@@ -90,6 +92,13 @@ public class DC1 extends LinearOpMode {
             }
 
             d = BB2;
+
+            odometry.updateLocation(hardware.En1.getCurrentPosition(), hardware.En2.getCurrentPosition(), hardware.En3.getCurrentPosition());
+            
+            hardware.En1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            hardware.En2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            hardware.En3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         }
 
 
