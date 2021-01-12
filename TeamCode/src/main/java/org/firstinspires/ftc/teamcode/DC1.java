@@ -12,9 +12,10 @@ public class DC1 extends LinearOpMode {
 
     Hardware hardware = new Hardware();
     Odometry odometry = new Odometry();
-    float MP = 1; //Movement Power Multiplier
-    double IP = 1; //Intake Power
-    double CP = 1; //conveyor Power
+    float MP = 1; //Movement Power
+    float IP = 1; //Intake Power
+    float CP = 1; //conveyor Power
+    float LP = 1; //Launcher Power
     //I think that the x or y direction of each switch might have to be made negative
     float LSX1 = gamepad1.left_stick_x;
     float LSY1 = gamepad1.left_stick_y;
@@ -34,11 +35,13 @@ public class DC1 extends LinearOpMode {
     boolean b = false;
     int c = 1;
     boolean d = false;
+    int e = 1;
+    boolean f = false;
 
     double p1, p2, p3, p4;
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
 
         hardware.init(hardwareMap);
 
@@ -93,11 +96,23 @@ public class DC1 extends LinearOpMode {
 
             d = BB2;
 
-            odometry.updateLocation(hardware.En1.getCurrentPosition(), hardware.En2.getCurrentPosition(), hardware.En3.getCurrentPosition());
-            
-            hardware.En1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            hardware.En2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            hardware.En3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //launcher
+
+            if (XB2 != f) {
+                e++;
+            }
+            if (e % 2 == 0) {
+                hardware.L.setPower(LP);
+            }
+            else {
+                hardware.L.setPower(0);
+            }
+
+            f = XB2;
+
+
+
+            odometry.updateLocation();
 
         }
 
