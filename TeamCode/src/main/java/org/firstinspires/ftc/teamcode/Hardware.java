@@ -5,6 +5,11 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvCamera;
 
 
 public class Hardware {
@@ -22,7 +27,7 @@ public class Hardware {
     public DcMotor En3;
 
     //Launcher motor
-    public DcMotor L1;
+    public DcMotor L;
 
     //Intake motor
     public DcMotor I;
@@ -34,6 +39,8 @@ public class Hardware {
     //public CRServo ;
 
     //public Servo ;
+
+    VisionPipeline vision = new VisionPipeline();
 
     HardwareMap hardwareMap;
 
@@ -55,7 +62,7 @@ public class Hardware {
         En2 = this.hardwareMap.get(DcMotor.class, "En2");
         En3 = this.hardwareMap.get(DcMotor.class, "En3");
 
-        L1 = this.hardwareMap.get(DcMotor.class, "L1");
+        L = this.hardwareMap.get(DcMotor.class, "L");
 
         I = this.hardwareMap.get(DcMotor.class, "I");
 
@@ -84,9 +91,9 @@ public class Hardware {
         //En3.setDirection(DcMotor.Direction.REVERSE);
 
 
-        L1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        L.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        L1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        L.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         I.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -97,7 +104,7 @@ public class Hardware {
         DM3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         DM4.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        L1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        L.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         I.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -115,6 +122,14 @@ public class Hardware {
 
     public double[] getGlobalPos() {
 
+
+        while (GlobalPos[2] >= 360) {
+
+            GlobalPos[2] = GlobalPos[2] - 360;
+
+        }
+
+
         return GlobalPos;
 
     }
@@ -125,6 +140,19 @@ public class Hardware {
         GlobalPos[1] = y;
         GlobalPos[2] = a;
 
+    }
+
+    //need to have vision method here
+    public void startVision(){
+        OpenCvCamera webcam;
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        webcam.openCameraDevice();
+
+        webcam.setPipeline(vision);
+
+        webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
     }
 
 }
