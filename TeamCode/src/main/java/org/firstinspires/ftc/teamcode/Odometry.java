@@ -1,9 +1,11 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 public class Odometry {
 
-    public void updateLocation(double e1, double e2, double e3) {
+    public void updateLocation() throws InterruptedException {
 
 
         double wheelDiameter = 2.3622; //inches
@@ -19,6 +21,9 @@ public class Odometry {
         double x = gp[0];
         double y = gp[1];
         double a = gp[2];
+        double e1 = hardware.En1.getCurrentPosition();
+        double e2 = hardware.En2.getCurrentPosition();
+        double e3 = hardware.En3.getCurrentPosition();
 
         //convert to distance
 
@@ -57,6 +62,165 @@ public class Odometry {
         y = y + (z * Math.sin(Math.toRadians(a)));
 
         hardware.setGlobalPos(x, y, a);
+
+        Thread.sleep(50);
+
+
+        //im hoping that this sets the
+
+        hardware.En1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        hardware.En2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        hardware.En3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        hardware.En1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        hardware.En2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        hardware.En3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
+
+
+    }
+
+    public void moveTo(double x, double y, double a) throws InterruptedException {
+
+        Hardware hardware = new Hardware();
+        double[] arePos = hardware.getGlobalPos();
+
+        double[] wantPos = new double[3];
+
+        wantPos[0] = x;
+        wantPos[1] = y;
+        wantPos[2] = a;
+
+        double moveAngle1;
+        double moveAngle = 0;
+
+
+
+        while (arePos != wantPos) {
+
+            double dx = wantPos[0] - arePos[0];
+            double dy = wantPos[1] - arePos[1];
+
+            if (dx != 0 && dy != 0) {
+
+                moveAngle1 = Math.toDegrees(Math.atan(Math.abs(dy) / Math.abs(dx)));
+
+                if (dx > 0 && dy > 0) {
+
+                    moveAngle = 90 - moveAngle1;
+
+                }
+
+                else if (dx > 0 && dy < 0) {
+
+                    moveAngle = 90 + moveAngle1;
+
+                }
+
+                else if (dx < 0 && dy > 0) {
+
+                    moveAngle = 270 + moveAngle1;
+
+                }
+
+                else if (dx < 0 && dy < 0) {
+
+                    moveAngle = 270 - moveAngle1;
+
+                }
+
+            }
+
+            else if (dx == 0 && dy > 0) {
+
+                moveAngle = 0;
+
+            }
+
+            else if (dx == 0 && dy < 0) {
+
+                moveAngle = 180;
+
+            }
+
+            else if (dy == 0 && dx > 0) {
+
+                moveAngle = 90;
+
+
+            }
+
+            else if (dy == 0 && dx < 0) {
+
+                moveAngle = 270;
+
+
+            }
+
+            boolean turnDirection = false;
+
+            if (((Math.abs(arePos[2] - moveAngle) > 180) && (arePos[2] > moveAngle)) ||
+                    ((Math.abs(arePos[2] - moveAngle) < 180) && (arePos[2] < moveAngle))) {
+
+                turnDirection = true;
+
+            }
+
+            if (arePos[2] != moveAngle && turnDirection) {
+
+
+                hardware.PowerControl(0.1, 0.1, -0.1, -0.1);
+
+            }
+
+            else if (arePos[2] != moveAngle && !turnDirection) {
+
+                hardware.PowerControl(-0.1, -0.1, 0.1, 0.1);
+
+            }
+
+            if (arePos[2] == moveAngle && (arePos[0] != wantPos[0] || arePos[1] != wantPos[1])) {
+
+                hardware.PowerControl(0.1, 0.1, 0.1, 0.1);
+
+            }
+
+            boolean turnDirection2 = false;
+
+            if (((Math.abs(arePos[2] - wantPos[2]) > 180) && (arePos[2] > wantPos[2])) ||
+                    ((Math.abs(arePos[2] - wantPos[2]) < 180) && (arePos[2] < wantPos[2]))) {
+
+                turnDirection2 = true;
+
+            }
+
+            if (arePos[0] == wantPos[0] && arePos[1] == wantPos[1] && arePos[2] != wantPos[2]) {
+
+                if (turnDirection2) {
+
+                    hardware.PowerControl(0.1, 0.1, -0.1, -0.1);
+
+                }
+
+                else {
+
+                    hardware.PowerControl(-0.1, -0.1, 0.1, 0.1);
+
+                }
+
+            }
+
+            arePos = hardware.getGlobalPos();
+
+            updateLocation();
+
+        }
+        
+        hardware.PowerControl(0, 0, 0, 0);
+
+
+
 
     }
 
