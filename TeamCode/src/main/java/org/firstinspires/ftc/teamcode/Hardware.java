@@ -66,7 +66,7 @@ public class Hardware {
 
         I = this.hardwareMap.get(DcMotor.class, "I");
 
-        C = this.hardwareMap.get(DcMotor.class, "I");
+        C = this.hardwareMap.get(DcMotor.class, "C");
 
         //name = this.hardwareMap.get(CRServo.class, "name");
 
