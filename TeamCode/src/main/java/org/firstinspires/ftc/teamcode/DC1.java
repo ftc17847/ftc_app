@@ -2,9 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-
-import org.firstinspires.ftc.teamcode.Hardware;
 
 @TeleOp(name = "Driver Controlled 1", group = "TeleOp")
 
@@ -41,7 +38,7 @@ public class DC1 extends LinearOpMode {
     double p1, p2, p3, p4;
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
 
         hardware.init(hardwareMap);
 
