@@ -142,17 +142,24 @@ public class Hardware {
 
     }
 
-    //need to have vision method here
     public void startVision(){
         OpenCvCamera webcam;
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam"), cameraMonitorViewId);
         webcam.openCameraDevice();
 
         webcam.setPipeline(vision);
 
         webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+    }
+
+    public int ringAmount() {
+
+         int a = vision.ringAmount();
+
+         return a;
+
     }
 
 }
