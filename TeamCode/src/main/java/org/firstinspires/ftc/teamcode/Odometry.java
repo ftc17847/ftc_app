@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class Odometry {
 
-    public void updateLocation() throws InterruptedException {
+    public void updateLocation() {
 
 
         double wheelDiameter = 2.3622; //inches
@@ -63,7 +63,11 @@ public class Odometry {
 
         hardware.setGlobalPos(x, y, a);
 
-        Thread.sleep(50);
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
         //im hoping that this sets the
@@ -81,7 +85,7 @@ public class Odometry {
 
     }
 
-    public void moveTo(double x, double y, double a) throws InterruptedException {
+    public void moveTo(double x, double y, double a) {
 
         Hardware hardware = new Hardware();
         double[] arePos = hardware.getGlobalPos();
@@ -219,7 +223,11 @@ public class Odometry {
         
         hardware.PowerControl(0, 0, 0, 0);
 
-
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
     }
