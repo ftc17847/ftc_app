@@ -5,15 +5,16 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 
-@TeleOp(name = "DCTest", group = "Test")
+@TeleOp(name = "Bad Controls", group = "TeleOp")
 
 public class DCTest extends LinearOpMode {
 
     Hardware hardware = new Hardware();
     Odometry odometry = new Odometry();
     float MP = 1; //Movement Power Multiplier
-    double IP = 1; //Intake Power
-    double CP = 1; //conveyor Power
+    double IP = .3; //Intake Power
+    double CP = .3; //conveyor Power
+    double LP = .3;
     //I think that the x or y direction of each switch might have to be made negative
     float LSX1 = gamepad1.left_stick_x;
     float LSY1 = gamepad1.left_stick_y;
@@ -53,37 +54,20 @@ public class DCTest extends LinearOpMode {
             }
 
             if (RT2 > 0) {
-                hardware.C.setPower(.3);
+                hardware.C.setPower(CP);
+                hardware.I.setPower(IP);
             }
             else if (AB2){
                 hardware.C.setPower(0);
+                hardware.I.setPower(0);
             }
 
 
             if (LT2 > 0) {
-                hardware.L.setPower(1);
+                hardware.L.setPower(LP);
             }
             else {
                 hardware.L.setPower(0);
-            }
-
-            if (AB2) {
-
-                hardware.I.setPower(1);
-                hardware.C.setPower(.3);
-
-            }
-            else if (RT2 > 0) {
-
-                hardware.I.setPower(0);
-
-            }
-
-            else {
-
-                hardware.I.setPower(0);
-                hardware.C.setPower(0);
-
             }
 
 

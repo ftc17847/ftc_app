@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Hardware;
 
-@TeleOp(name = "Baby Mode", group = "TeleOp")
+@TeleOp(name = "Odometry TeleOp Test", group = "Test")
 
 public class BabyMode extends LinearOpMode {
 
@@ -44,35 +44,48 @@ public class BabyMode extends LinearOpMode {
 
         hardware.init(hardwareMap);
 
+        double[] pos = hardware.getGlobalPos();
+
         waitForStart();
 
         while(opModeIsActive()) {
 
             if (RSX1 > 0) {
 
-                hardware.PowerControl(0.1, -0.1, 0.1, -0.1);
+                hardware.PowerControl(0.3, -0.3, 0.3, -0.3);
 
             }
 
             else if (RSX1 < 0) {
 
-                hardware.PowerControl(-0.1, 0.1, -0.1, 0.1);
+                hardware.PowerControl(-0.3, 0.3, -0.3, 0.3);
 
             }
 
             else if (LSY1 > 0) {
 
-                hardware.PowerControl(0.1, 0.1, 0.1, 0.1);
+                hardware.PowerControl(0.3, 0.3, 0.3, 0.3);
 
             }
 
             else if (LSY1 < 0) {
 
-                hardware.PowerControl(-0.1, -0.1, -0.1, -0.1);
+                hardware.PowerControl(-0.3, -0.3, -0.3, -0.3);
+
+            }
+
+            if (gamepad1.a) {
+
+                odometry.moveTo(0, 0, 0);
 
             }
 
             odometry.updateLocation();
+
+            telemetry.addData("XPos", pos[0] );
+            telemetry.addData("YPos", pos[1] );
+            telemetry.addData("Angle", pos[2] );
+            telemetry.update();
 
         }
 

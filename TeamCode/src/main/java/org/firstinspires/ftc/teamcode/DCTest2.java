@@ -3,16 +3,16 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "Good Controls", group = "TeleOp")
+@TeleOp(name = "Movement Test", group = "Test")
 
-public class DC1 extends LinearOpMode {
+public class DCTest2 extends LinearOpMode {
 
     Hardware hardware = new Hardware();
     Odometry odometry = new Odometry();
-    double MP = 1; //Movement Power
-    double IP = .3; //Intake Power
-    double CP = .3; //conveyor Power
-    double LP = .3; //Launcher Power
+    float MP = 1; //Movement Power
+    float IP = 1; //Intake Power
+    float CP = 1; //conveyor Power
+    float LP = 1; //Launcher Power
     //I think that the x or y direction of each switch might have to be made negative
     float LSX1 = gamepad1.left_stick_x;
     float LSY1 = gamepad1.left_stick_y;
@@ -28,8 +28,6 @@ public class DC1 extends LinearOpMode {
     boolean BB2 = gamepad2.b;
     boolean XB2 = gamepad2.x;
     boolean YB2 = gamepad2.y;
-    float LT2 = gamepad2.left_trigger;
-    float RT2 = gamepad2.right_trigger;
     int a = 1;
     boolean b = false;
     int c = 1;
@@ -64,32 +62,6 @@ public class DC1 extends LinearOpMode {
             if (p4 < -1) {p1 = -1;}
 
             hardware.PowerControl(p1, p2, p3, p4);
-
-            if (AB1) {
-
-                odometry.moveTo(12, 12, 0);
-
-            }
-
-            if (RT2 > 0) {
-                hardware.C.setPower(CP);
-                hardware.I.setPower(IP);
-            }
-            else if (AB2){
-                hardware.C.setPower(0);
-                hardware.I.setPower(0);
-            }
-
-
-            if (LT2 > 0) {
-                hardware.L.setPower(LP);
-            }
-            else {
-                hardware.L.setPower(0);
-            }
-
-
-            odometry.updateLocation();
 
         }
 
